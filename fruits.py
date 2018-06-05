@@ -6,6 +6,7 @@ from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
 from keras import backend
 import os
 import sys
+import clusterone
 
 def preprocess(image):
 	img = skimage.transform.resize(image,(64, 64, 3))
@@ -25,6 +26,20 @@ def index_to_one_hot(index):
 
 def get_data():
 	
+	training_data_path = get_data_path(
+			dataset_name = 'rmeredith99/fruit_data',  # on ClusterOne
+			local_root = 'C:\Users\Ryan Meredith\Documents\github',  # path to local dataset
+			local_repo = 'fruit_data',  # local data folder name
+			path = 'Training'  # folder within the data folder
+			)
+	
+	validation_data_path = get_data_path(
+			dataset_name = 'rmeredith99/fruit_data',  # on ClusterOne
+			local_root = 'C:\Users\Ryan Meredith\Documents\github',  # path to local dataset
+			local_repo = 'fruit_data',  # local data folder name
+			path = 'Validation'  # folder within the data folder
+			)
+
 	# variables to keep track of progress
 	z = 0.
 	total_images = 31688.+10657.
@@ -34,9 +49,9 @@ def get_data():
 	n = 0
 	x_train = np.zeros((31688,64,64,3),dtype = float)
 	y_train = np.zeros((31688,64),dtype = float)
-	for folder in os.listdir("Training"):
-		for f in os.listdir("Training\\" + folder):
-			img =  np.asarray(Image.open("Training\\" + folder + "\\" + f))
+	for folder in os.listdir(training_data_path):
+		for f in os.listdir(training_data_path + "/" + folder):
+			img =  np.asarray(Image.open(training_data_path + "/" + folder + "/" + f))
 			img = preprocess(img)
 			x_train[n,:,:,:] = img
 			y_train[n,:] = index_to_one_hot(index)
@@ -55,9 +70,9 @@ def get_data():
 	n = 0
 	x_val = np.zeros((10657,64,64,3),dtype = float)
 	y_val = np.zeros((10657,64),dtype = float)
-	for folder in os.listdir("Validation"):
-		for f in os.listdir("Validation\\" + folder):
-			img =  np.asarray(Image.open("Validation\\" + folder + "\\" + f))
+	for folder in os.listdir(validation_data_path):
+		for f in os.listdir(validation_data_path + "/" + folder):
+			img =  np.asarray(Image.open(validation_data_path + "/" + folder + "/" + f))
 			img = preprocess(img)
 			x_val[n,:,:,:] = img
 			y_val[n,:] = index_to_one_hot(index)
