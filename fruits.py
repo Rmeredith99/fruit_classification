@@ -6,7 +6,7 @@ from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
 from keras import backend
 import os
 import sys
-import clusterone
+from clusterone import get_data_path
 
 def preprocess(image):
 	img = skimage.transform.resize(image,(64, 64, 3))
