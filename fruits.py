@@ -1,6 +1,4 @@
 import numpy as np
-import random
-from random import randint, uniform
 from PIL import Image
 import skimage.transform
 from keras.models import Sequential
