@@ -4,9 +4,10 @@ import skimage.transform
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
 from keras import backend
+from time import time
 import os
 import sys
-from clusterone import get_data_path
+from clusterone import get_data_path, get_logs_path
 
 def preprocess(image):
 	img = skimage.transform.resize(image,(64, 64, 3))
@@ -132,10 +133,12 @@ if __name__ == "__main__":
 	
 	model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 	
-	#model.load_weights("test1.h5")
+	# Setting up logs
+	log_path = get_logs_path(r"C:\Users\Ryan Meredith\Documents\github\fruit_classification\logs\\")
+	tensorboard = TensorBoard(log_dir=log_path.format(time()))
 	
 	# running the model
-	model.fit(x_train,y_train,epochs=10,batch_size=64,validation_data=(x_val,y_val))
+	model.fit(x_train,y_train,epochs=10,batch_size=64,validation_data=(x_val,y_val), callbacks=[tensorboard])
 	model.save_weights("test2.h5")
 	
 	# evaluating test data
