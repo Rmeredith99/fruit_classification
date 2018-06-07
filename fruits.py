@@ -4,6 +4,7 @@ import skimage.transform
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
 from keras import backend
+from keras.callbacks import TensorBoard
 from time import time
 import os
 import sys
